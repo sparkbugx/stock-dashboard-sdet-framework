@@ -151,12 +151,3 @@ Playwright handles browser automation and UI validation for the Angular frontend
 3. **End-to-End User Journeys:** Live integration tests cover searching for stock tickers, rendering charts, and handling error states (e.g., API throttling or invalid symbols).
 
 
-
-
-echo "# stock-dashboard-sdet-framework" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/sparkbugx/stock-dashboard-sdet-framework.git
-git push -u origin main
