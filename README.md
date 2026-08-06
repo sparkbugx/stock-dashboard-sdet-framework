@@ -1,8 +1,8 @@
 # Stock Dashboard SDET Framework
 
-A robust Software Development Engineer in Test (SDET) repository designed to validate end-to-end (E2E) workflows for an Angular Stock Dashboard frontend and verify backend integrations using the **Alpha Vantage Intraday API**.
+A Software Development Engineer in Test (SDET) repository designed to validate end-to-end (E2E) workflows for an Angular Stock Dashboard frontend and verify backend integrations using the **Alpha Vantage Intraday API**.
 
-This project demonstrates a multi-layered quality assurance strategy combining full browser automation using **Playwright** and lightweight API automation test suites via **REST Client `.http` files**.
+> **Status:** The Angular application is scaffolded and the project structure is in place. The Playwright E2E and `.http` API test layers described below are **planned** and will be built out progressively.
 
 ---
 
@@ -10,29 +10,32 @@ This project demonstrates a multi-layered quality assurance strategy combining f
 
 ```
 stock-dashboard-sdet-framework/
-├── .vscode/                  # VS Code extension recommendations & settings
-├── api-tests/                # API Automation Test Suites (.http)
-│   ├── environments.json     # Environment variables (Base URL, API Key)
-│   └── intraday-suite.http   # Automated API assertions for Alpha Vantage
-├── e2e/                      # Playwright E2E Test Automation
+├── src/                      # Angular frontend application
+│   └── app/                  # Core components, routes & unit tests
+├── e2e/                      # Playwright E2E Test Automation  [planned]
 │   ├── fixtures/             # Custom test fixtures & mock data
 │   ├── page-objects/         # Page Object Model (POM) architecture
 │   ├── tests/                # Automated UI test specs
 │   └── playwright.config.ts  # Playwright configuration file
+├── api-tests/                # API Automation Test Suites (.http)  [planned]
+│   ├── environments.json     # Environment variables (Base URL, API Key)
+│   └── intraday-suite.http   # Automated API assertions for Alpha Vantage
 ├── package.json              # Dependencies and test execution scripts
 └── README.md                 # Project documentation
-
 ```
 
 ---
 
 ## 🚀 Key Features & Tech Stack
 
-* **Frontend:** Angular (Stock Dashboard Application)
-* **External API:** Alpha Vantage (`TIME_SERIES_INTRADAY`)
-* **E2E UI Testing:** Playwright (TypeScript)
-* **API Testing:** `.http` REST Client files with automated test suites
-* **Pattern Architecture:** Page Object Model (POM) for clean, maintainable UI automation
+| Layer | Technology |
+| --- | --- |
+| Frontend | Angular (Stock Dashboard Application) |
+| External API | Alpha Vantage (`TIME_SERIES_INTRADAY`) |
+| Unit Testing | Angular unit tests (Vitest via `ng test`) |
+| E2E UI Testing | Playwright (TypeScript) — *planned* |
+| API Testing | `.http` REST Client files with automated test suites — *planned* |
+| Automation Pattern | Page Object Model (POM) for clean, maintainable UI automation — *planned* |
 
 ---
 
@@ -40,14 +43,12 @@ stock-dashboard-sdet-framework/
 
 Ensure you have the following installed on your machine before setup:
 
-* **Node.js** (v18.x or higher)
-* **npm** (v9.x or higher)
-* **VS Code** (recommended) with the following extensions:
-* [Playwright Test for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
-* [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) or [httpyac](https://marketplace.visualstudio.com/items?itemName=anweber.vscode-httpyac)
-
-
-* **Alpha Vantage API Key:** Get a free API key at [Alpha Vantage](https://www.google.com/search?q=https://www.alphavantage.co/support/%23api-key).
+- **Node.js** (v18.x or higher)
+- **npm** (v9.x or higher)
+- **VS Code** (recommended) with the following extensions:
+  - [Playwright Test for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
+  - [httpyac](https://marketplace.visualstudio.com/items?itemName=anweber.vscode-httpyac) (recommended for `.http` suites with automated assertions) or [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+- **Alpha Vantage API Key:** Get a free API key at [Alpha Vantage](https://www.alphavantage.co/support/#api-key).
 
 ---
 
@@ -56,45 +57,50 @@ Ensure you have the following installed on your machine before setup:
 1. **Clone the repository:**
 ```bash
 git clone https://github.com/sparkbugx/stock-dashboard-sdet-framework.git
-
 ```
-
 
 2. **Install dependencies:**
 ```bash
 npm install
-
 ```
 
-
-3. **Install Playwright browsers:**
+3. **Install Playwright browsers** *(once the E2E layer is added):*
 ```bash
-npx playwright install --with-deps
-
+npx playwright install
 ```
-
+> On Linux, add `--with-deps` to also install OS-level browser dependencies.
 
 4. **Environment Configuration:**
-   Create a `.env` file in the root directory (or update `api-tests/environments.json`):
+   Update the variables in `api-tests/environments.json` (or create a `.env` file in the root directory):
 ```env
 ALPHA_VANTAGE_API_KEY=your_api_key_here
 BASE_URL=http://localhost:4200
-
 ```
 
-
+5. **Run the application:**
+```bash
+npm start
+```
+The dashboard is served at `http://localhost:4200`.
 
 ---
 
 ## 🧪 Executing Tests
 
-### 1. API Testing Suite (`.http` Automation)
+### 1. Unit Tests (Current)
 
-API tests are defined using standard `.http` syntax. They execute raw HTTP requests and run assertions against responses (status codes, headers, and JSON body structures).
+Angular unit tests run through Vitest and cover component behavior.
 
-* **Via VS Code:**
-  Open `api-tests/intraday-suite.http` and click **Send Request** or **Run Suite** above any request block.
-* **Example `.http` Test snippet:**
+| Script | Description |
+| --- | --- |
+| `npm test` | Runs all Angular unit tests |
+
+### 2. API Testing Suite (`.http` Automation) — *planned*
+
+API tests are defined using standard `.http` syntax. They execute raw HTTP requests and run assertions against responses (status codes, headers, and JSON body structures). Open `api-tests/intraday-suite.http` in VS Code and click **Send Request** or **Run Suite** above any request block.
+
+Example `.http` test snippet:
+
 ```http
 @baseUrl = https://www.alphavantage.co
 @apiKey = {{ALPHA_VANTAGE_API_KEY}}
@@ -108,14 +114,9 @@ Accept: application/json
 ?? header content-type matches application/json
 ?? body Meta Data['2. Symbol'] == IBM
 ?? body Meta Data['4. Interval'] == 5min
-
 ```
 
-
-
----
-
-### 2. Playwright E2E Testing Suite
+### 3. Playwright E2E Testing Suite — *planned*
 
 Playwright handles browser automation and UI validation for the Angular frontend.
 
@@ -143,11 +144,18 @@ Playwright handles browser automation and UI validation for the Angular frontend
 |  [.http Test Suite]   ---> Direct Contract Validation against     |
 |                             Live Alpha Vantage Intraday Endpoint  |
 +-------------------------------------------------------------------+
-
 ```
 
 1. **Contract & API Validation:** `.http` files quickly ensure Alpha Vantage's `TIME_SERIES_INTRADAY` responses conform to expected schemas without loading heavy browser instances.
-2. **Deterministic UI Testing:** Playwright intercepts backend network calls to inject mock JSON responses, preventing API rate-limit errors (5 requests/min on free tier) during UI automation.
+2. **Deterministic UI Testing:** Playwright intercepts backend network calls to inject mock JSON responses, preventing API rate-limit errors (5 requests/min on the free tier) during UI automation.
 3. **End-to-End User Journeys:** Live integration tests cover searching for stock tickers, rendering charts, and handling error states (e.g., API throttling or invalid symbols).
 
+---
 
+## 🗺️ Roadmap
+
+- [x] Angular frontend scaffold & unit test setup
+- [ ] Playwright E2E suite with Page Object Model (POM)
+- [ ] Playwright config with network mocking for deterministic UI tests
+- [ ] `.http` API test suite for the Alpha Vantage `TIME_SERIES_INTRADAY` endpoint
+- [ ] `test:e2e*` npm scripts and CI-ready report generation
