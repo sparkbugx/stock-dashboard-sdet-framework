@@ -55,7 +55,7 @@ Ensure you have the following installed on your machine before setup:
 
 1. **Clone the repository:**
 ```bash
-
+git clone https://github.com/sparkbugx/stock-dashboard-sdet-framework.git
 
 ```
 
