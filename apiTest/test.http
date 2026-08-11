@@ -1,0 +1,54 @@
+GET {{URL}}/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=1
+Accept: application/json
+Content-Type: application/json
+Authorization: 'api_key=live_dkRvEug18PqP9a0w5wxKqxRp8ydwfEO3kRyQj5X7aHBrukSFydbp4iSip5Wd0xq9'
+
+####
+
+# Weather air quality from Mockerito sandbox
+GET https://sandbox.mockerito.com/meteorology/api/weather/airquality
+Accept: application/json
+Content-Type: application/json
+Authentication: ''
+
+
+### Post
+POST https://sandbox.mockerito.com/api/users
+Content-Type: application/json
+Authentication: ''
+
+{
+  "id": 1,
+  "email": null,
+  "username": null,
+  "password": null,
+  "firstName": null,
+  "lastName": null,
+  "phone": null,
+  "address": {
+    "city": null,
+    "street": null,
+    "number": 1,
+    "zipcode": null,
+    "geolocation": {
+      "lat": null,
+      "long": null
+    }
+  }
+}
+
+> {%
+    client.test("POST status is 200", function () {
+        client.assert(response.status === 200, "Unexpected status: " + response.status);
+    });
+
+    if (response.status !== 200) {
+        client.log("POST failed with status " + response.status + " instead of 200");
+    }
+%}
+
+> {%
+  client.log("POST status is 500", function (){
+    client.assert(response.status === 500, "Unexpected status: " + response.status);
+  })
+%}
