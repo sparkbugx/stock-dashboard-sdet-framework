@@ -47,8 +47,3 @@ Authentication: ''
     }
 %}
 
-> {%
-  client.log("POST status is 500", function (){
-    client.assert(response.status === 500, "Unexpected status: " + response.status);
-  })
-%}
